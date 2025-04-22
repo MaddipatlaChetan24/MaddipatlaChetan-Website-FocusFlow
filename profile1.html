@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - FocusFlow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Playfair Display', serif;
+            background-color: #000;
+            color: #f0e6d2;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #000;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            color: #f0e6d2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: #d1c4a7;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #f0e6d2;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #000;
+            background-color: #d1c4a7;
+        }
+
+        .profile-container {
+            padding: 100px 20px 60px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-message span {
+            color: #d1c4a7;
+            font-weight: 700;
+        }
+
+        .profile-details {
+            background-color: #1a1a1a;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .profile-details h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .username-display {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #f0e6d2;
+        }
+
+        .username-input {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .username-input input {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #f0e6d2;
+            border: 1px solid #d1c4a7;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .username-input input:focus {
+            outline: none;
+            border-color: #f0e6d2;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #f0e6d2;
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #d1c4a7;
+            transform: scale(1.05);
+        }
+
+        .logout-button {
+            background-color: #a94442;
+        }
+
+        .logout-button:hover {
+            background-color: #8b3a38;
+            transform: scale(1.05);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+
+            .profile-container {
+                padding: 80px 15px 40px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .welcome-message {
+                font-size: 1rem;
+            }
+
+            .profile-details {
+                padding: 20px;
+                max-width: 90%;
+            }
+
+            .profile-details h2 {
+                font-size: 1.6rem;
+            }
+
+            .username-display, .username-input input {
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="logo">FocusFlow</a>
+        <nav>
+            <a href="2.html">Home</a>
+            <a href="about1.html">About</a>
+            <a href="contact1.html">Contact</a>
+        </nav>
+    </div>
+
+    <div class="profile-container">
+        <h1>Your Profile</h1>
+        <p class="welcome-message">Welcome back, <span id="username-display">Guest</span>!</p>
+        <div class="profile-details">
+            <h2>Account Details</h2>
+            <div class="username-display" id="username-text"></div>
+            <div class="username-input" id="username-edit">
+                <input type="text" id="username-input" placeholder="Enter your username">
+            </div>
+            <div class="button-group">
+                <button id="edit-button" onclick="enableEdit()">Edit Username</button>
+                <button id="save-button" onclick="saveUsername()" style="display: none;">Save</button>
+                <button id="cancel-button" onclick="cancelEdit()" style="display: none;">Cancel</button>
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalUsername = '';
+
+        // Automatically load username from localStorage
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            const usernameText = document.getElementById('username-text');
+            const usernameDisplay = document.getElementById('username-display');
+            const usernameInput = document.getElementById('username-input');
+            
+            if (username) {
+                usernameText.textContent = username;
+                usernameDisplay.textContent = username;
+                usernameInput.value = username;
+            } else {
+                usernameText.textContent = 'Guest';
+                usernameDisplay.textContent = 'Guest';
+                usernameInput.value = '';
+            }
+        };
+
+        // Enable edit mode
+        function enableEdit() {
+            const usernameText = document.getElementById('username-text');
+            const usernameEdit = document.getElementById('username-edit');
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+
+            originalUsername = document.getElementById('username-input').value;
+            usernameText.style.display = 'none';
+            usernameEdit.style.display = 'block';
+            editButton.style.display = 'none';
+            saveButton.style.display = 'inline-block';
+            cancelButton.style.display = 'inline-block';
+            document.getElementById('username-input').focus();
+        }
+
+        // Save updated username
+        function saveUsername() {
+            const usernameInput = document.getElementById('username-input');
+            const username = usernameInput.value.trim();
+            const usernameText = document.getElementById('username-text');
+            const usernameDisplay = document.getElementById('username-display');
+            const usernameEdit = document.getElementById('username-edit');
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+
+            if (username === '') {
+                alert('Please enter a valid username.');
+                return;
+            }
+
+            localStorage.setItem('username', username);
+            usernameText.textContent = username;
+            usernameDisplay.textContent = username;
+            usernameText.style.display = 'block';
+            usernameEdit.style.display = 'none';
+            editButton.style.display = 'inline-block';
+            saveButton.style.display = 'none';
+            cancelButton.style.display = 'none';
+            alert('Username updated successfully!');
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            const usernameText = document.getElementById('username-text');
+            const usernameEdit = document.getElementById('username-edit');
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const usernameInput = document.getElementById('username-input');
+
+            usernameInput.value = originalUsername;
+            usernameText.style.display = 'block';
+            usernameEdit.style.display = 'none';
+            editButton.style.display = 'inline-block';
+            saveButton.style.display = 'none';
+            cancelButton.style.display = 'none';
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('username');
+                alert('Logged out successfully.');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

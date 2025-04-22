@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracker - FocusFlow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+    
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+    
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            background: #ff6b6b;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 10;
+        }
+    
+        .logo:hover {
+            transform: translateY(-3px);
+            background: #e65a5a;
+        }
+    
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            margin-top: 70px; /* Adjusted to avoid overlap with logo */
+        }
+    
+        .container:hover {
+            transform: translateY(-5px);
+        }
+    
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+    
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    
+        input, button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+    
+        input {
+            flex: 1;
+            min-width: 200px;
+            border: 2px solid #e0e0e0;
+            outline: none;
+        }
+    
+        input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.2);
+        }
+    
+        button {
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            min-width: 120px;
+        }
+    
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    
+        .add-btn {
+            background: #28a745;
+            color: white;
+        }
+    
+        .goal-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+    
+        .goal-item {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+    
+        .goal-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+    
+        .goal-item.completed {
+            background: #d4edda;
+            opacity: 0.9;
+            text-decoration: line-through;
+        }
+    
+        .goal-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    
+        .goal-text {
+            flex: 1;
+            text-align: left;
+            margin: 0;
+        }
+    
+        .complete-btn {
+            background: #17a2b8;
+            color: white;
+            padding: 8px 16px;
+            min-width: auto;
+        }
+    
+        .goal-deadline {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+    
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    
+        .edit-btn {
+            background: #ffc107;
+            color: #333;
+        }
+    
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+    
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+    
+        .progress {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s ease;
+        }
+    
+        .quote-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 15px;
+            font-style: italic;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            font-size: 18px;
+            line-height: 1.5;
+            position: relative;
+        }
+    
+        .quote-refresh {
+            background: #6c757d;
+            color: white;
+            margin-top: 20px;
+        }
+    
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+    
+            .logo {
+                font-size: 20px;
+                padding: 8px 16px;
+                top: 10px;
+                left: 10px;
+            }
+    
+            .container {
+                padding: 20px;
+                max-width: 100%;
+                margin-top: 60px;
+            }
+    
+            h2 {
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+    
+            .input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+    
+            input {
+                min-width: 100%;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+    
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+                min-width: 100%;
+            }
+    
+            .goal-item {
+                padding: 15px;
+                gap: 10px;
+            }
+    
+            .goal-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+    
+            .goal-text {
+                font-size: 16px;
+            }
+    
+            .goal-deadline {
+                font-size: 12px;
+            }
+    
+            .buttons {
+                gap: 8px;
+            }
+    
+            .complete-btn, .edit-btn, .delete-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: auto;
+            }
+    
+            .quote-box {
+                font-size: 16px;
+                padding: 15px;
+                margin-top: 20px;
+            }
+    
+            .quote-refresh {
+                margin-top: 15px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+    
+            .logo {
+                font-size: 18px;
+                padding: 6px 12px;
+                top: 5px;
+                left: 5px;
+            }
+    
+            .container {
+                padding: 15px;
+                margin-top: 50px;
+            }
+    
+            h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+    
+            input {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+    
+            button {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+    
+            .goal-item {
+                padding: 12px;
+                gap: 8px;
+            }
+    
+            .goal-text {
+                font-size: 14px;
+            }
+    
+            .goal-deadline {
+                font-size: 10px;
+            }
+    
+            .complete-btn, .edit-btn, .delete-btn {
+                padding: 5px 10px;
+                font-size: 10px;
+            }
+    
+            .progress-bar {
+                height: 4px;
+            }
+    
+            .quote-box {
+                font-size: 14px;
+                padding: 12px;
+                margin-top: 15px;
+            }
+    
+            .quote-refresh {
+                margin-top: 10px;
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="about1.html" class="logo">FocusFlow</a>
+    <div class="container">
+        <h2>🎯 Goal Tracker</h2>
+        <div class="input-group">
+            <input type="text" id="goal-input" placeholder="Enter your goal...">
+            <input type="date" id="goal-deadline">
+            <button class="add-btn" onclick="addGoal()">➕ Add Goal</button>
+        </div>
+        
+        <ul class="goal-list" id="goal-list"></ul>
+
+        <div class="quote-box" id="quote-box">💡 Loading motivation...</div>
+        <button class="quote-refresh" onclick="fetchIndianQuote()">🔄 New Quote</button>
+    </div>
+
+    <script>
+        const goalInput = document.getElementById("goal-input");
+        const goalDeadline = document.getElementById("goal-deadline");
+        const goalList = document.getElementById("goal-list");
+        const quoteBox = document.getElementById("quote-box");
+
+        let goals = JSON.parse(localStorage.getItem('goals')) || [];
+
+        function saveGoals() {
+            localStorage.setItem('goals', JSON.stringify(goals));
+        }
+
+        function loadGoals() {
+            goals.forEach(goal => renderGoal(goal));
+        }
+
+        function renderGoal(goal) {
+            const goalItem = document.createElement("li");
+            goalItem.classList.add("goal-item");
+            if (goal.completed) goalItem.classList.add("completed");
+
+            const timeLeft = calculateTimeLeft(goal.deadline);
+            const progress = calculateProgress(goal.deadline);
+
+            goalItem.innerHTML = `
+                <div class="goal-content">
+                    <span class="goal-text">${goal.text}</span>
+                </div>
+                <span class="goal-deadline">⏳ ${timeLeft}</span>
+                <div class="progress-bar"><div class="progress" style="width: ${progress}%"></div></div>
+                <div class="buttons">
+                    <button class="complete-btn" onclick="toggleComplete('${goal.id}')">${goal.completed ? 'Undo' : 'Complete'}</button>
+                    <button class="edit-btn" onclick="editGoal('${goal.id}')">✏️ Edit</button>
+                    <button class="delete-btn" onclick="deleteGoal('${goal.id}')">❌ Delete</button>
+                </div>
+            `;
+
+            goalList.appendChild(goalItem);
+        }
+
+        function addGoal() {
+            const goalText = goalInput.value.trim();
+            const deadline = goalDeadline.value;
+
+            if (!goalText || !deadline) {
+                alert("Please enter a goal and set a deadline!");
+                return;
+            }
+
+            const goal = {
+                id: Date.now().toString(),
+                text: goalText,
+                deadline: deadline,
+                completed: false,
+                created: new Date()
+            };
+
+            goals.push(goal);
+            saveGoals();
+            renderGoal(goal);
+
+            goalInput.value = "";
+            goalDeadline.value = "";
+            fetchIndianQuote();
+        }
+
+        function editGoal(id) {
+            const goalIndex = goals.findIndex(g => g.id === id);
+            if (goalIndex === -1) return;
+
+            const goal = goals[goalIndex];
+            const newGoalText = prompt("Edit your goal:", goal.text);
+            const newDeadline = prompt("Edit your deadline (YYYY-MM-DD):", goal.deadline);
+
+            if (newGoalText && newDeadline) {
+                goals[goalIndex] = {
+                    ...goal,
+                    text: newGoalText,
+                    deadline: newDeadline
+                };
+                saveGoals();
+                refreshGoals();
+                fetchIndianQuote();
+            }
+        }
+
+        function deleteGoal(id) {
+            goals = goals.filter(g => g.id !== id);
+            saveGoals();
+            refreshGoals();
+        }
+
+        function toggleComplete(id) {
+            const goalIndex = goals.findIndex(g => g.id === id);
+            if (goalIndex === -1) return;
+
+            goals[goalIndex].completed = !goals[goalIndex].completed;
+            saveGoals();
+            refreshGoals();
+        }
+
+        function refreshGoals() {
+            goalList.innerHTML = "";
+            goals.forEach(goal => renderGoal(goal));
+        }
+
+        function calculateTimeLeft(deadline) {
+            const now = new Date();
+            const deadlineDate = new Date(deadline);
+            const timeDiff = deadlineDate - now;
+
+            if (timeDiff <= 0) return "Deadline Passed!";
+            
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            return `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`;
+        }
+
+        function calculateProgress(deadline) {
+            const now = new Date();
+            const deadlineDate = new Date(deadline);
+            const createdDate = new Date(goals.find(g => g.deadline === deadline)?.created || new Date());
+            const totalTime = deadlineDate - createdDate;
+            const elapsedTime = now - createdDate;
+            return Math.min(100, Math.max(0, (elapsedTime / totalTime) * 100));
+        }
+
+        const indianQuotes = [
+            { text: "Arise, awake, and stop not till the goal is reached.", author: "Swami Vivekananda" },
+            { text: "Be the change that you wish to see in the world.", author: "Mahatma Gandhi" },
+            { text: "Difficulties in your life do not come to destroy you, but to help you realize your hidden potential.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Ratan Tata" },
+            { text: "Do not wait for leaders; do it alone, person to person.", author: "Mother Teresa" },
+            { text: "Small aim is a crime; have great aim.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "If you want to shine like the sun, first burn like the sun.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The best way to find yourself is to lose yourself in the service of others.", author: "Mahatma Gandhi" },
+            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Chanakya" },
+            { text: "You have to dream before your dreams can come true.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The weak can never forgive. Forgiveness is the attribute of the strong.", author: "Mahatma Gandhi" },
+            { text: "Take up one idea. Make that one idea your life.", author: "Swami Vivekananda" },
+            { text: "The best brains of the nation may be found on the last benches of the classroom.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "In a gentle way, you can shake the world.", author: "Mahatma Gandhi" },
+            { text: "Strength does not come from physical capacity. It comes from an indomitable will.", author: "Mahatma Gandhi" },
+            { text: "All power is within you; you can do anything and everything.", author: "Swami Vivekananda" },
+            { text: "Excellence is a continuous process and not an accident.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The future depends on what we do in the present.", author: "Mahatma Gandhi" },
+            { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle (via Indian thinkers)" },
+            { text: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi" },
+            { text: "Dream, dream, dream. Dreams transform into thoughts and thoughts result in action.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs (inspired by Indian philosophy)" },
+            { text: "Happiness is when what you think, what you say, and what you do are in harmony.", author: "Mahatma Gandhi" },
+            { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela (echoed by Indian leaders)" },
+            { text: "To succeed in your mission, you must have single-minded devotion to your goal.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The mind is everything. What you think you become.", author: "Buddha" },
+            { text: "A man is but the product of his thoughts; what he thinks, he becomes.", author: "Mahatma Gandhi" },
+            { text: "You cannot believe in God until you believe in yourself.", author: "Swami Vivekananda" },
+            { text: "Learning gives creativity, creativity leads to thinking, thinking provides knowledge.", author: "Dr. A.P.J. Abdul Kalam" },
+            { text: "The greatest religion is to be true to your own nature.", author: "Swami Vivekananda" },
+            { text: "An eye for an eye only ends up making the whole world blind.", author: "Mahatma Gandhi" },
+            { text: "Don’t let your dreams be dreams.", author: "Jack Johnson (inspired by Indian thought)" },
+            { text: "The purpose of our lives is to be happy.", author: "Dalai Lama" },
+            { text: "Change yourself – you are in control.", author: "Mahatma Gandhi" },
+            { text: "We must accept finite disappointment, but never lose infinite hope.", author: "Martin Luther King Jr. (inspired by Indian philosophy)" }
+        ];
+
+        function fetchIndianQuote() {
+            const randomIndex = Math.floor(Math.random() * indianQuotes.length);
+            const quote = indianQuotes[randomIndex];
+            quoteBox.innerHTML = `💡 <i>"${quote.text}"</i> — <b>${quote.author}</b>`;
+        }
+
+        // Initial setup
+        loadGoals();
+        fetchIndianQuote();
+        setInterval(fetchIndianQuote, 2500); // Changed to 2.5 seconds (2500 ms)
+    </script>
+</body>
+</html>

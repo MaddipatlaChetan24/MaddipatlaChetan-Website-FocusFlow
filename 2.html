@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Playfair Display', serif;
+            background-color: #000;
+            color: #f0e6d2;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: #f0e6d2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: #d1c4a7;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #f0e6d2;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #d1c4a7;
+        }
+
+        .profile-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            border: 2px solid #f0e6d2;
+            border-radius: 50%;
+            color: #f0e6d2;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .profile-icon:hover {
+            background-color: #d1c4a7;
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .profile-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .container {
+            text-align: center;
+            padding: 80px 20px; 
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #f0e6d2;
+            color: #000;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #d1c4a7;
+            transform: scale(1.05);
+        }
+
+        .feedback-box {
+            background-color: #1a1a1a;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .feedback-box h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f0e6d2;
+        }
+
+        .feedback-box h3 span {
+            color: #d1c4a7;
+            font-weight: 700;
+        }
+
+        .feedback-box form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .feedback-box textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            background-color: #000;
+            color: #f0e6d2;
+            border: 1px solid #d1c4a7;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .feedback-box textarea:focus {
+            outline: none;
+            border-color: #f0e6d2;
+        }
+
+        .feedback-box button {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .why-choose-us {
+            background-color: #1a1a1a; 
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .why-choose-us h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .feature {
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature p {
+            font-size: 1rem;
+            margin-bottom: 0;
+            max-width: 100%;
+        }
+
+        .productivity-basics {
+            background-color: #1a1a1a;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .productivity-basics h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .basics {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .basic {
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .basic:hover {
+            transform: translateY(-10px);
+        }
+
+        .basic h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .basic p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .productivity-tips {
+            background-color: #000;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .productivity-tips h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .tips {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tip {
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .tip:hover {
+            transform: translateY(-10px);
+        }
+
+        .tip h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .tip p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .user-reviews {
+            background-color: #1a1a1a;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .user-reviews h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .reviews {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .review {
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .review:hover {
+            transform: translateY(-10px);
+        }
+
+        .review p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .review h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+            color: #d1c4a7;
+        }
+
+        .more {
+            background-color: #1a1a1a;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .more h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .more-content {
+            max-width: 600px;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .more-content:hover {
+            transform: translateY(-10px);
+        }
+
+        .more-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .more-content a {
+            color: #f0e6d2;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .more-content a:hover {
+            color: #d1c4a7;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .header { padding: 10px; }
+            .logo { font-size: 1.5rem; }
+            nav { gap: 15px; }
+            nav a { font-size: 16px; }
+            .container { padding: 60px 10px; }
+            .features {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            .feature {
+                min-width: 200px;
+            }
+            .feedback-box h3 { font-size: 1.8rem; }
+            .feedback-box textarea { height: 100px; }
+            .profile-icon {
+                width: 32px;
+                height: 32px;
+            }
+            .profile-icon svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="logo">FocusFlow</a>
+        <nav>
+            <a href="about1.html">About</a>
+            <a href="contact1.html">Contact</a>
+            <a href="profile1.html" class="profile-icon" title="Profile">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>Become Productive in Minutes</h1>
+        <p>The best website to increase focus and make you the best version of yourself.</p>
+        <button onclick="openIndex()">Get Started</button>
+    </div>
+
+    <section class="why-choose-us">
+        <h2>Why Choose Us</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Proven Techniques</h3>
+                <p>We use time-tested methods like the Pomodoro Technique to boost your productivity.</p>
+            </div>
+            <div class="feature">
+                <h3>Customizable Tools</h3>
+                <p>Adjust focus and break times to suit your personal workflow and preferences.</p>
+            </div>
+            <div class="feature">
+                <h3>User-Friendly Design</h3>
+                <p>Our intuitive interface ensures you can start improving your focus in seconds.</p>
+            </div>
+            <div class="feature">
+                <h3>Progress Tracking</h3>
+                <p>Monitor your productivity trends and celebrate your achievements over time.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="productivity-basics">
+        <h2>Productivity Basics</h2>
+        <div class="basics">
+            <div class="basic">
+                <h3>To-Do List</h3>
+                <p>A to-do list is a tool for organizing tasks you need to complete. It’s typically a list of items—written or digital—that you prioritize and check off as you finish them, helping you manage time and stay focused.</p>
+            </div>
+            <div class="basic">
+                <h3>Pomodoro Timer</h3>
+                <p>A Pomodoro timer is a time management method created by Francesco Cirillo. It uses focused work sessions (usually 25 minutes, called a "Pomodoro") followed by a 5-minute break, with a longer break (15-30 minutes) after four cycles. It enhances productivity by structuring work into short, concentrated bursts.</p>
+            </div>
+            <div class="basic">
+                <h3>Note-Taking</h3>
+                <p>Note-taking is the act of writing down or recording important information, ideas, or insights during activities like studying, meetings, or planning. It aids memory retention, organizes thoughts, and provides a reference for later use.</p>
+            </div>
+            <div class="basic">
+                <h3>Goal Setting & Tracker</h3>
+                <p>Goal setting is the process of identifying specific, measurable objectives you aim to achieve, often with deadlines. A goal tracker is a tool—digital or physical—that tracks your progress toward these goals, keeping you motivated and accountable.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="productivity-tips">
+        <h2>Productivity Tips</h2>
+        <div class="tips">
+            <div class="tip">
+                <h3>Set Clear Goals</h3>
+                <p>Break your tasks into small, actionable steps to maintain focus and momentum.</p>
+            </div>
+            <div class="tip">
+                <h3>Eliminate Distractions</h3>
+                <p>Use our tools to block notifications and create a distraction-free environment.</p>
+            </div>
+            <div class="tip">
+                <h3>Rest Strategically</h3>
+                <p>Take short breaks to recharge and avoid burnout during long work sessions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="user-reviews">
+        <h2>What Our Users Say</h2>
+        <div class="reviews">
+            <div class="review">
+                <p>"FocusFlow transformed my workday. The Pomodoro timer keeps me on track, and I’ve never been more productive!"</p>
+                <h3>- Sarah M.</h3>
+            </div>
+            <div class="review">
+                <p>"The customizable tools are a game-changer. I can tweak everything to fit my schedule perfectly."</p>
+                <h3>- James T.</h3>
+            </div>
+            <div class="review">
+                <p>"I love the progress tracking feature. Seeing my improvements motivates me to keep going!"</p>
+                <h3>- Emily R.</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="more">
+        <h2>More About Us</h2>
+        <div class="more-content">
+            <p>We’re passionate about helping you achieve your goals. Our platform is designed to make productivity simple, effective, and enjoyable.</p>
+            <p>Whether you're a student, professional, or creative, our tools are here to support you every step of the way. We believe that productivity isn’t just about working harder—it’s about working smarter.</p>
+            <p>Our mission is to empower you to take control of your time and unlock your full potential.</p>
+        </div>
+    </section>
+
+    <div class="feedback-box">
+        <h3>Tell <span>FocusFlow</span> What You Think</h3>
+        <form>
+            <textarea placeholder="Let us know what you think about FocusFlow..."></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <script>
+        function openIndex() {
+            window.location.href = "3.html";
+        }
+    </script>
+</body>
+</html>
